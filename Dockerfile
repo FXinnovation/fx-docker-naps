@@ -8,9 +8,9 @@ ADD ./resources /resources
 
 RUN /resources/build && rm -rf /resources
 
-CMD [""]
+# CMD [""]
 
-ENTRYPOINT ["entrypoint"]
+# ENTRYPOINT ["entrypoint"]
 
 LABEL "maintainer"="cloudsquad@fxinnovation.com" \
       "org.label-schema.name"="naps" \
