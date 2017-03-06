@@ -4,9 +4,9 @@ ARG BUILD_DATE
 ARG VCS_REF
 ARG VERSION
 
-ADD ./resources /resources
+#ADD ./resources /resources
 
-RUN /resources/build && rm -rf /resources
+#RUN /resources/build && rm -rf /resources
 
 # CMD [""]
 
