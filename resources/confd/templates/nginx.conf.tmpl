@@ -10,6 +10,9 @@ http {
   server {
     listen {{ getenv "PORT" }};
 
+    ssl on;
+    ssl_certificate /etc/ssl/certs/ssl.crt;
+
     location / {
 
       access_by_lua '
