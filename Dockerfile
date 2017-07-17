@@ -1,6 +1,7 @@
 FROM openresty/openresty:xenial
 
 ENV PORT=8000 \
+    CONFD_VERSION=0.11.0 \
     REDIRECT_URI_PATH=login \
     DISCOVERY="https://example.com" \
     CLIENT_ID=foo \
