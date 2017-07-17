@@ -2,8 +2,11 @@ events {
   worker_connections 128;
 }
 
+
+
 http {
   lua_shared_dict discovery 1m;
+  resolver 8.8.8.8;
   server {
     listen {{ getenv "PORT" }};
 
