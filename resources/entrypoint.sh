@@ -5,4 +5,4 @@ set -e -x
 confd -onetime -backend env
 
 # Launch openresty
-/usr/local/openresty/bin/openresty -g daemon off;
+/usr/local/openresty/bin/openresty -g "daemon off;"
