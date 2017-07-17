@@ -1,8 +1,21 @@
 FROM openresty/openresty:xenial
 
+ENV PORT=8000 \
+    REDIRECT_URI_PATH=login \
+    DISCOVERY="https://example.com" \
+    CLIENT_ID=foo \
+    CLIENT_SECRET=bar \
+    AUTHORIZATION_PARAMS="hd=\"example.com\"" \
+    SCOPE="openid email profile" \
+    LOGOUT_PATH="logout" \
+    DOMAIN="example.com" \
+    PROXY_PASS="example.com"
+
 ARG BUILD_DATE
 ARG VCS_REF
 ARG VERSION
+
+ENTRYPOINT ["/entrypoint.sh"]
 
 ADD ./resources /resources
 

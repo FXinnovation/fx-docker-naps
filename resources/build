@@ -7,3 +7,15 @@ apt-get update
 apt-get install -y libssl-dev git
 
 luarocks install lua-resty-openidc
+
+curl -L --retry 5 -o /usr/local/bin/confd \
+  https://github.com/kelseyhightower/confd/releases/download/v${CONFD_VERSION}/confd-${CONFD_VERSION}-linux-amd64
+chmod +x /usr/local/bin/confd
+
+mkdir -p /etc/confd/conf.d
+mkdir -p /etc/confd/templates
+
+cp /resources/confd/templates/* /etc/confd/templates/
+cp /resources/confd/conf.d/* /etc/confd/conf.d/
+
+mv /resources/entrypoint.sh /entrypoint.sh

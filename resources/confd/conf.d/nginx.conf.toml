@@ -1,0 +1,4 @@
+[template]
+src  = 'nginx.conf.tmpl'
+dest = '/usr/local/openresty/nginx/conf/nginx.conf'
+keys = []

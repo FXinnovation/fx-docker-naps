@@ -1,0 +1,47 @@
+events {
+  worker_connections 128;
+}
+
+http {
+  lua_shared_dict discovery 1m;
+  server {
+    listen {{ getenv "PORT" }};
+
+    location / {
+
+      access_by_lua '
+
+          local opts = {
+             redirect_uri_path = "/{{ getenv "REDIRECT_URI_PATH" }}",
+             discovery = "{{ getenv "DISCOVERY" }}",
+             client_id = "{{ getenv "CLIENT_ID" }}",
+             client_secret = "{{ getenv "CLIENT_SECRET" }}",
+             authorization_params = { {{ getenv "AUTHORIZATION_PARAMS" }} },
+             scope = "{{ getenv "SCOPE" }}",
+             redirect_uri_scheme = "https",
+             logout_path = "/{{ getenv "LOGOUT_PATH" }}",
+             redirect_after_logout_uri = "/"
+          }
+
+          local res, err = require("resty.openidc").authenticate(opts)
+
+          if err then
+            ngx.status = 500
+            ngx.say(err)
+            ngx.exit(ngx.HTTP_INTERNAL_SERVER_ERROR)
+          end
+
+          if res.id_token.hd ~= "{{ getenv "DOMAIN" }}" then
+            ngx.exit(ngx.HTTP_FORBIDDEN)
+          end
+
+          if res.id_token.sub then
+            ngx.req.set_header("X-USER", res.id_token.sub)
+          else
+            ngx.req.clear_header("X-USER")
+          end
+      ';
+      proxy_pass {{ getenv "PROXY_PASS" }};
+    }
+  }
+}
