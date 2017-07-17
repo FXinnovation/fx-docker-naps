@@ -2,11 +2,9 @@ events {
   worker_connections 128;
 }
 
-
-
 http {
   lua_shared_dict discovery 1m;
-  lua_ssl_trusted_certificate /etc/ssl/certs;
+  lua_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
   lua_ssl_verify_depth 5;
 
   resolver 8.8.8.8 ipv6=off;
