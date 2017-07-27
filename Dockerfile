@@ -1,15 +1,19 @@
 FROM openresty/openresty:xenial
 
 ENV PORT=8000 \
+    WORKER_CONNECTIONS=128 \
+    RESOLVER=8.8.8.8 \
     CONFD_VERSION=0.11.0 \
-    REDIRECT_URI_PATH=login \
-    DISCOVERY="https://example.com" \
-    CLIENT_ID=foo \
-    CLIENT_SECRET=bar \
-    AUTHORIZATION_PARAMS="hd=\"example.com\"" \
-    SCOPE="openid email profile" \
-    LOGOUT_PATH="logout" \
-    DOMAIN="example.com" \
+    OIC_REDIRECT_URI_PATH=login \
+    OIC_DISCOVERY="https://example.com" \
+    OIC_CLIENT_ID=foo \
+    OIC_CLIENT_SECRET=bar \
+    OIC_AUTHORIZATION_PARAMS="hd=\"example.com\"" \
+    OIC_SCOPE="openid email profile" \
+    OIC_REDIRECT_URI_SCHEME="https" \
+    OIC_LOGOUT_PATH="logout" \
+    OIC_REDIRECT_AFTER_LOGOUT_URI="/" \
+    OIC_DOMAIN="example.com" \
     PROXY_PASS="example.com"
 
 ARG BUILD_DATE
@@ -24,10 +28,10 @@ RUN /resources/build && rm -rf /resources
 
 LABEL "maintainer"="cloudsquad@fxinnovation.com" \
       "org.label-schema.name"="naps" \
-      "org.label-schema.base-image.name"="docker.io/library/nginx" \
-      "org.label-schema.base-image.version"="1.11.10-alpine" \
-      "org.label-schema.description"="NGINX Auth Proxy SAML" \
-      "org.label-schema.url"="https://nginx.org" \
+      "org.label-schema.base-image.name"="openresty/openresty" \
+      "org.label-schema.base-image.version"="xenial" \
+      "org.label-schema.description"="NGINX Auth Proxy System" \
+      "org.label-schema.url"="https://bitbucket.org/fxadmin/public-common-docker-naps" \
       "org.label-schema.vcs-url"="https://bitbucket.org/fxadmin/public-common-docker-naps" \
       "org.label-schema.vendor"="FXinnovation" \
       "org.label-schema.schema-version"="1.0.0-rc.1" \
@@ -37,4 +41,4 @@ LABEL "maintainer"="cloudsquad@fxinnovation.com" \
       "org.label-schema.vcs-ref"=$VCS_REF \
       "org.label-schema.version"=$VERSION \
       "org.label-schema.build-date"=$BUILD_DATE \
-      "org.label-schema.usage"="docker run fxinnovation/naps:[TAG]"
+      "org.label-schema.usage"="https://bitbucket.org/fxadmin/public-common-docker-naps"

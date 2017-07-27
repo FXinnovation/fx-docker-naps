@@ -1,13 +1,50 @@
 events {
-  worker_connections 128;
+  worker_connections {{ getenv "WORKER_CONNECTIONS" }};
 }
 
 http {
   lua_shared_dict discovery 1m;
   lua_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
   lua_ssl_verify_depth 5;
+  {{ if eq (getenv "SESSION_STORAGE") "redis" }}
+  set $session_storage redis;
+    {{ if ne (getenv "SESSION_REDIS_PREFIX") "" }}
+    set $session_redis_prefix        {{ getenv "SESSION_REDIS_PREFIX" }};
+    {{ end }}
+    {{ if ne (getenv "SESSION_REDIS_SOCKET") "" }}
+    set $session_redis_socket        {{ getenv "SESSION_REDIS_SOCKET" }};
+    {{ end }}
+    {{ if ne (getenv "SESSION_REDIS_HOST") "" }}
+    set $session_redis_host          {{ getenv "SESSION_REDIS_HOST" }};
+    {{ end }}
+    {{ if ne (getenv "SESSION_REDIS_PORT") "" }}
+    set $session_redis_port          {{ getenv "SESSION_REDIS_PORT" }};
+    {{ end }}
+    {{ if ne (getenv "SESSION_REDIS_AUTH") "" }}
+    set $session_redis_auth          {{ getenv "SESSION_REDIS_AUTH" }};
+    {{ end }}
+    {{ if ne (getenv "SESSION_REDIS_USELOCKING") "" }}
+    set $session_redis_uselocking    {{ getenv "SESSION_REDIS_USELOCKING" }};
+    {{ end }}
+    {{ if ne (getenv "SESSION_REDIS_SPINLOCKWAIT") "" }}
+    set $session_redis_spinlockwait  {{ getenv "SESSION_REDIS_SPINLOCKWAIT" }};
+    {{ end }}
+    {{ if ne (getenv "SESSION_REDIS_MAXLOCKWAIT") "" }}
+    set $session_redis_maxlockwait   {{ getenv "SESSION_REDIS_MAXLOCKWAIT" }};
+    {{ end }}
+    {{ if ne (getenv "SESSION_REDIS_POOL_TIMEOUT") "" }}
+    set $session_redis_pool_timeout  {{ getenv "SESSION_REDIS_POOL_TIMEOUT" }};
+    {{ end }}
+    {{ if ne (getenv "SESSION_REDIS_POOL_SIZE") "" }}
+    set $session_redis_pool_size     {{ getenv "SESSION_REDIS_POOL_SIZE" }};
+    {{ end }}
+  {{ end }}
 
-  resolver 8.8.8.8 ipv6=off;
+  {{ if eq (getenv "SESSION_STORAGE") "cookie" }}
+  set $session_storage cookie;
+  {{ end }}
+
+  resolver {{ getenv "RESOLVER" }} ipv6=off;
   server {
     listen {{ getenv "PORT" }};
 
@@ -21,15 +58,15 @@ http {
       access_by_lua '
 
           local opts = {
-             redirect_uri_path = "/{{ getenv "REDIRECT_URI_PATH" }}",
-             discovery = "{{ getenv "DISCOVERY" }}",
-             client_id = "{{ getenv "CLIENT_ID" }}",
-             client_secret = "{{ getenv "CLIENT_SECRET" }}",
-             authorization_params = { {{ getenv "AUTHORIZATION_PARAMS" }} },
-             scope = "{{ getenv "SCOPE" }}",
-             redirect_uri_scheme = "https",
-             logout_path = "/{{ getenv "LOGOUT_PATH" }}",
-             redirect_after_logout_uri = "/"
+             redirect_uri_path = "/{{ getenv "OIC_REDIRECT_URI_PATH" }}",
+             discovery = "{{ getenv "OIC_DISCOVERY" }}",
+             client_id = "{{ getenv "OIC_CLIENT_ID" }}",
+             client_secret = "{{ getenv "OIC_CLIENT_SECRET" }}",
+             authorization_params = { {{ getenv "OIC_AUTHORIZATION_PARAMS" }} },
+             scope = "{{ getenv "OIC_SCOPE" }}",
+             redirect_uri_scheme = "{{ getenv "OIC_REDIRECT_URI_SCHEME" }}",
+             logout_path = "/{{ getenv "OIC_LOGOUT_PATH" }}",
+             redirect_after_logout_uri = "{{ getenv "OIC_REDIRECT_AFTER_LOGOUT_URI" }}"
           }
 
           local res, err = require("resty.openidc").authenticate(opts)
@@ -45,9 +82,9 @@ http {
           end
 
           if res.id_token.sub then
-            ngx.req.set_header("X-USER", res.id_token.sub)
+            ngx.req.set_header("{{ getenv "OIC_USER_HEADER" }}", res.id_token.sub)
           else
-            ngx.req.clear_header("X-USER")
+            ngx.req.clear_header("{{ getenv "OIC_USER_HEADER" }}")
           end
       ';
       proxy_pass {{ getenv "PROXY_PASS" }};

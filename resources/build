@@ -2,20 +2,36 @@
 
 set -e -x
 
+# Updating librairies
 apt-get update
 
+# Installing git and libssl-dev
 apt-get install -y libssl-dev git
 
+# Installing lua module for openidc
 luarocks install lua-resty-openidc
 
+# Creating group for naps
+groupadd naps
+
+# Creating user
+useradd -g naps -s /bin/bash -r naps
+
+# downloading confd
 curl -L --retry 5 -o /usr/local/bin/confd \
   https://github.com/kelseyhightower/confd/releases/download/v${CONFD_VERSION}/confd-${CONFD_VERSION}-linux-amd64
 chmod +x /usr/local/bin/confd
 
+# Creating directories for confd
 mkdir -p /etc/confd/conf.d
 mkdir -p /etc/confd/templates
 
+# Copying templates
 cp /resources/confd/templates/* /etc/confd/templates/
 cp /resources/confd/conf.d/* /etc/confd/conf.d/
 
+# Set entrypoint
 mv /resources/entrypoint.sh /entrypoint.sh
+
+# Change ownership of templates
+chown -R naps:naps /etc/confd
