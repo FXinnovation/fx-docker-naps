@@ -13,6 +13,7 @@ ENV PORT=8000 \
     OIC_REDIRECT_URI_SCHEME="https" \
     OIC_LOGOUT_PATH="logout" \
     OIC_REDIRECT_AFTER_LOGOUT_URI="/" \
+    OIC_USER_HEADER="X-USER" \
     OIC_DOMAIN="example.com" \
     PROXY_PASS="example.com"
 
