@@ -24,6 +24,7 @@ Here is the list of key that can be set:
 | OIC_REDIRECT_URI_SCHEME | https | String |
 | OIC_LOGOUT_PATH | logout | String |
 | OIC_REDIRECT_AFTER_LOGOUT_URI | "/" | String |
+| OIC_USER_HEADER | "X-USER" | String |
 | OIC_DOMAIN | example.com | String |
 | PROXY_PASS | example.com | String |
 | SESSION_STORAGE | nil | "cookie" or "redis" |
