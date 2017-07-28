@@ -6,13 +6,17 @@ http {
   lua_shared_dict discovery 1m;
   lua_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
   lua_ssl_verify_depth 5;
+  {{ if eq (getenv "RESOLVER" "host") }}
+  resolver {{ getenv "NAMESERVER" }} ipv6=off;
+  {{ else }}
   resolver {{ getenv "RESOLVER" }} ipv6=off;
+  {{ end }}
   lua_code_cache off;
-  set $session_secret {{ getenv "SESSION_SECRET" }};
 
   server {
     listen {{ getenv "PORT" }};
 
+    set $session_secret {{ getenv "SESSION_SECRET" }};
     {{ if eq (getenv "SESSION_STORAGE") "redis" }}
     set $session_storage redis;
       {{ if ne (getenv "SESSION_REDIS_PREFIX") "" }}

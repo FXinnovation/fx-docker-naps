@@ -2,7 +2,7 @@ FROM openresty/openresty:xenial
 
 ENV PORT=8000 \
     WORKER_CONNECTIONS=128 \
-    RESOLVER=8.8.8.8 \
+    RESOLVER=host \
     CONFD_VERSION=0.11.0 \
     OIC_REDIRECT_URI_PATH=login \
     OIC_DISCOVERY="https://example.com" \
