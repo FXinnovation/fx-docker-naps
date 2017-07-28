@@ -15,7 +15,7 @@ ENV PORT=8000 \
     OIC_REDIRECT_AFTER_LOGOUT_URI="/" \
     OIC_USER_HEADER="X-USER" \
     OIC_DOMAIN="example.com" \
-    SESSION_SECRET="pleasechagemebecausethisisimportant"
+    SESSION_SECRET="pleasechagemebecausethisisimportant" \
     PROXY_PASS="example.com"
 
 ARG BUILD_DATE
