@@ -1,5 +1,3 @@
-error_log logs/error.log debug;
-
 events {
   worker_connections {{ getenv "WORKER_CONNECTIONS" }};
 }
@@ -76,9 +74,6 @@ http {
              logout_path = "/{{ getenv "OIC_LOGOUT_PATH" }}",
              redirect_after_logout_uri = "{{ getenv "OIC_REDIRECT_AFTER_LOGOUT_URI" }}"
           }
-
-          print(var.session_storage)
-          print(var.session_redis_host)
 
           local res, err = require("resty.openidc").authenticate(opts)
 
