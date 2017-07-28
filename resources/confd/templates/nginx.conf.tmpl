@@ -25,6 +25,44 @@ http {
       proxy_buffering off;
       proxy_cache off;
 
+     set $session_secret {{ getenv "SESSION_SECRET" }};
+     {{ if eq (getenv "SESSION_STORAGE") "redis" }}
+     set $session_storage redis;
+       {{ if ne (getenv "SESSION_REDIS_PREFIX") "" }}
+       set $session_redis_prefix        {{ getenv "SESSION_REDIS_PREFIX" }};
+       {{ end }}
+       {{ if ne (getenv "SESSION_REDIS_SOCKET") "" }}
+       set $session_redis_socket        {{ getenv "SESSION_REDIS_SOCKET" }};
+       {{ end }}
+       {{ if ne (getenv "SESSION_REDIS_HOST") "" }}
+       set $session_redis_host          {{ getenv "SESSION_REDIS_HOST" }};
+       {{ end }}
+       {{ if ne (getenv "SESSION_REDIS_PORT") "" }}
+       set $session_redis_port          {{ getenv "SESSION_REDIS_PORT" }};
+       {{ end }}
+       {{ if ne (getenv "SESSION_REDIS_AUTH") "" }}
+       set $session_redis_auth          {{ getenv "SESSION_REDIS_AUTH" }};
+       {{ end }}
+       {{ if ne (getenv "SESSION_REDIS_USELOCKING") "" }}
+       set $session_redis_uselocking    {{ getenv "SESSION_REDIS_USELOCKING" }};
+       {{ end }}
+       {{ if ne (getenv "SESSION_REDIS_SPINLOCKWAIT") "" }}
+       set $session_redis_spinlockwait  {{ getenv "SESSION_REDIS_SPINLOCKWAIT" }};
+       {{ end }}
+       {{ if ne (getenv "SESSION_REDIS_MAXLOCKWAIT") "" }}
+       set $session_redis_maxlockwait   {{ getenv "SESSION_REDIS_MAXLOCKWAIT" }};
+       {{ end }}
+       {{ if ne (getenv "SESSION_REDIS_POOL_TIMEOUT") "" }}
+       set $session_redis_pool_timeout  {{ getenv "SESSION_REDIS_POOL_TIMEOUT" }};
+       {{ end }}
+       {{ if ne (getenv "SESSION_REDIS_POOL_SIZE") "" }}
+       set $session_redis_pool_size     {{ getenv "SESSION_REDIS_POOL_SIZE" }};
+       {{ end }}
+     {{ end }}
+     {{ if eq (getenv "SESSION_STORAGE") "cookie" }}
+     set $session_storage cookie;
+     {{ end }} 
+
       access_by_lua '
 
           local opts = {
@@ -39,17 +77,10 @@ http {
              redirect_after_logout_uri = "{{ getenv "OIC_REDIRECT_AFTER_LOGOUT_URI" }}"
           }
 
-          local session_opts = {
-             storage = "{{ getenv "SESSION_STORAGE"}}",
-             {{ if eq (getenv "SESSION_STORAGE") "redis" }}redis = {
-               prefix = "{{ getenv "SESSION_REDIS_PREFIX" }}",
-               host = "{{ getenv "SESSION_REDIS_HOST" }}",
-               port = "{{ getenv "SESSION_REDIS_PORT" }}",
-             },{{ end }}
-             secret = "{{getenv "SESSION_SECRET"}}"
-          }
+          print(var.session_storage)
+          print(var.session_redis_host)
 
-          local res, err = require("resty.openidc").authenticate(opts, nil, nil, session_opts)
+          local res, err = require("resty.openidc").authenticate(opts)
 
           if err then
             ngx.status = 500
