@@ -20,7 +20,7 @@ Here is the list of key that can be set:
 | PORT | 8000 | String |
 | SESSION_SECRET | pleasechangemebecausethisisimportant | String |
 | WORKER_CONNECTIONS | 128 | String |
-| RESOLVER | 8.8.8.8 | String |
+| RESOLVER | host | String "host" of an IP address |
 | OIC_REDIRECT_URI_PATH | login | String |
 | OIC_DISCOVERY | https://example.com | String |
 | OIC_CLIENT_ID | foo | String |
