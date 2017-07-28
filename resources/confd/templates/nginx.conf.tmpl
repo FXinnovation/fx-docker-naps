@@ -1,3 +1,5 @@
+error_log logs/error.log debug;
+
 events {
   worker_connections {{ getenv "WORKER_CONNECTIONS" }};
 }
