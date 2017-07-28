@@ -7,7 +7,7 @@ This image contains naps (NGINX auth proxy system). It provides an easy way to c
 We do NOT push a `latest` tag for this image. You should always pin a specific version for it.
 We do not follow the aws-es-proxy release tags in the docker image tags. You can always find the aws-es-proxy version in the Dockerfile that was used to create the image or you can use the labels.
 
-### *Note*
+#### *Note*
 We do publish a `master` tag which is based on the master branch. This should only be used for testing purposes and never for actual deployments.
 
 ## Usage
@@ -34,6 +34,9 @@ Here is the list of key that can be set:
 | PROXY_PASS | example.com | String |
 | SESSION_STORAGE | cookie | "cookie" |
 | SESSION_SECRET | pleasechangemebecausethisisimportant | String |
+
+#### *Note*
+We have prepared usage of redis as a common cache for naps, but it isn't working yet. When we'll have time we'll do the update on the image
 
 ## Labels
 We set labels on our images with additional information on the image. we follow the guidelines defined at http://label-schema.org/. Visit their website for more information about those labels.
