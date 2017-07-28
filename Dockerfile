@@ -4,6 +4,7 @@ ENV PORT=8000 \
     WORKER_CONNECTIONS=128 \
     RESOLVER=host \
     CONFD_VERSION=0.11.0 \
+    LUA_RESTY_HTTP_VERSION=0.10-0 \
     OIC_REDIRECT_URI_PATH=login \
     OIC_DISCOVERY="https://example.com" \
     OIC_CLIENT_ID=foo \
@@ -16,7 +17,7 @@ ENV PORT=8000 \
     OIC_USER_HEADER="X-USER" \
     OIC_DOMAIN="example.com" \
     SESSION_STORAGE="cookie" \
-    SESSION_SECRET="pleasechangethisbecauseitisimportant"
+    SESSION_SECRET="pleasechangethisbecauseitisimportant" \
     PROXY_PASS="http://example.com"
 
 ARG BUILD_DATE
