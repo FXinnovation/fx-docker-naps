@@ -22,7 +22,9 @@ http {
       proxy_buffering off;
       proxy_cache off;
 
+     {{ if ne (getenv "SESSION_SECRET") "" }}
      set $session_secret {{ getenv "SESSION_SECRET" }};
+     {{ end }}
      {{ if eq (getenv "SESSION_STORAGE") "redis" }}
      set $session_storage redis;
        {{ if ne (getenv "SESSION_REDIS_PREFIX") "" }}

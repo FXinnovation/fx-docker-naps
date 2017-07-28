@@ -15,12 +15,7 @@ ENV PORT=8000 \
     OIC_REDIRECT_AFTER_LOGOUT_URI="/" \
     OIC_USER_HEADER="X-USER" \
     OIC_DOMAIN="example.com" \
-    SESSION_SECRET="pleasechagemebecausethisisimportant" \
-    SESSION_STORAGE="cookie" \
-    SESSION_REDIS_HOST="127.0.0.1" \
-    SESSION_REDIS_PORT="6379" \
-    SESSION_REDIS_PREFIX="naps" \
-    PROXY_PASS="example.com"
+    PROXY_PASS="http://example.com"
 
 ARG BUILD_DATE
 ARG VCS_REF
