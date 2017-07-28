@@ -18,7 +18,6 @@ Here is the list of key that can be set:
 | Key | Default Value | Type |
 |-----|:-------------:|:----:|
 | PORT | 8000 | String |
-| SESSION_SECRET | pleasechangemebecausethisisimportant | String |
 | WORKER_CONNECTIONS | 128 | String |
 | RESOLVER | host | String "host" of an IP address |
 | OIC_REDIRECT_URI_PATH | login | String |
@@ -33,17 +32,8 @@ Here is the list of key that can be set:
 | OIC_USER_HEADER | "X-USER" | String |
 | OIC_DOMAIN | example.com | String |
 | PROXY_PASS | example.com | String |
-| SESSION_STORAGE | nil | "cookie" or "redis" |
-| SESSION_REDIS_PREFIX | nil | String |
-| SESSION_REDIS_SOCKET | nil | String |
-| SESSION_REDIS_HOST | nil | String |
-| SESSION_REDIS_PORT | nil | String |
-| SESSION_REDIS_AUTH | nil | String |
-| SESSION_REDIS_USELOCKING | nil | String |
-| SESSION_REDIS_SPINLOCKWAIT | nil | String |
-| SESSION_REDIS_MAXLOCKWAIT | nil | String |
-| SESSION_REDIS_POOL_TIMEOUT | nil | String |
-| SESSION_REDIS_POOL_SIZE | nil | String |
+| SESSION_STORAGE | cookie | "cookie" |
+| SESSION_SECRET | pleasechangemebecausethisisimportant | String |
 
 ## Labels
 We set labels on our images with additional information on the image. we follow the guidelines defined at http://label-schema.org/. Visit their website for more information about those labels.
