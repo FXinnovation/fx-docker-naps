@@ -9,7 +9,7 @@ apt-get update
 apt-get install -y libssl-dev git
 
 # Installing speicifc version for lua-resty-http
-luarocks install lua-resty-http 0.10.0
+luarocks install lua-resty-http 0.10-0
 
 # Installing lua module for openidc
 luarocks install lua-resty-openidc
