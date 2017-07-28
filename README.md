@@ -13,6 +13,7 @@ Here is the list of key that can be set:
 | Key | Default Value | Type |
 |-----|:-------------:|:----:|
 | PORT | 8000 | String |
+| SESSION_SECRET | pleasechangemebecausethisisimportant | String |
 | WORKER_CONNECTIONS | 128 | String |
 | RESOLVER | 8.8.8.8 | String |
 | OIC_REDIRECT_URI_PATH | login | String |
